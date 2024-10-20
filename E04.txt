@@ -1,0 +1,83 @@
+//Query API cơ bản
+//Cau 1
+db.movies.findOne({
+    title: "The Italian"
+})
+//Cau 2
+db.movies.find({
+    cast: "Leo Willis"
+},{
+    _id:0,
+    cast:1,
+    title:1
+})
+//Cau 3
+db.movies.find({
+    genres: "History"
+}).sort({ genres: -1 })
+.skip(10)
+.limit(5)
+//Cau 4
+db.movies.update( { _id: ObjectId("573a1390f29313caabcd42e8") }, {
+    $set: {year: 2023}
+} )
+//Cau 5
+db.movies.updateMany(
+  { runtime: { $lt: 10 } }, 
+  { $inc: { "tomatoes.review": 1 } } 
+)
+//Cau 6
+db.movies.deleteMany(
+  { year: { $gte: 1801, $lte: 1900 } },
+  { limit: 2 } 
+)
+//Operators
+// cau 1
+
+db.movies.countDocuments() 
+
+db.movies.aggregate([
+  {
+    $count: "totalMovies"
+  }
+])
+
+//cau 2
+
+db.movies.countDocuments({ countries: "USA" })
+
+//cau 3
+
+db.movies.countDocuments({ countries: { $eq: ["USA"] } })
+
+//cau 4
+
+db.movies.countDocuments({ countries: { $in: ["USA", "UK"] } })
+
+//cau 5 
+db.movies.countDocuments({
+  countries: { $all: ["USA", "UK"] }
+})
+
+//Cau6
+db.movies.countDocuments({ countries: { $eq: ["USA", "UK"] } })
+
+//Cau7
+db.movies.countDocuments({
+  countries: { $nin: ["USA", "UK"] } 
+})
+
+//Cau8
+db.movies.countDocuments({
+  countries: { $all: ["USA"], $nin: ["UK"] } 
+})
+
+//Cau9
+db.movies.countDocuments({
+  countries: { $exists: false } 
+})
+
+//Cau10
+db.movies.countDocuments({
+  countries: { $exists: true, $nin: ["USA", "UK"] } 
+})
